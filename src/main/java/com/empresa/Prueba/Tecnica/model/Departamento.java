@@ -28,7 +28,6 @@ public class Departamento {
     @JsonIgnore
     private List<Empleado> empleados;
 
-
     public Departamento() {
     }
 
@@ -91,7 +90,8 @@ public class Departamento {
             return false;
         }
         Departamento departamento = (Departamento) o;
-        return Objects.equals(id, departamento.id) && Objects.equals(nombre, departamento.nombre) && Objects.equals(empleados, departamento.empleados);
+        return Objects.equals(id, departamento.id) && Objects.equals(nombre, departamento.nombre)
+                && Objects.equals(empleados, departamento.empleados);
     }
 
     @Override
@@ -101,11 +101,8 @@ public class Departamento {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            ", empleados='" + getEmpleados() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", nombre='" + getNombre() + "'" + ", empleados='" + getEmpleados() + "'"
+                + "}";
     }
-    
+
 }

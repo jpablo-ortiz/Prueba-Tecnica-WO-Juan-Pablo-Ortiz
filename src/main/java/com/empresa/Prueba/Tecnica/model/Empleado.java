@@ -32,7 +32,6 @@ public class Empleado {
     @ManyToOne
     private Departamento departamentoAlQuePertenece;
 
-
     public Empleado() {
     }
 
@@ -45,7 +44,7 @@ public class Empleado {
         this.tiempoCompleto = tiempoCompleto;
         this.departamentoAlQuePertenece = departamentoAlQuePertenece;
     }
-    
+
     public Empleado(Long id, String nombre, String cargo, double salario, boolean tiempoCompleto) {
         this.id = id;
         this.nombre = nombre;
@@ -144,7 +143,10 @@ public class Empleado {
             return false;
         }
         Empleado empleado = (Empleado) o;
-        return Objects.equals(id, empleado.id) && Objects.equals(nombre, empleado.nombre) && Objects.equals(cargo, empleado.cargo) && salario == empleado.salario && tiempoCompleto == empleado.tiempoCompleto && Objects.equals(departamentoAlQuePertenece, empleado.departamentoAlQuePertenece);
+        return Objects.equals(id, empleado.id) && Objects.equals(nombre, empleado.nombre)
+                && Objects.equals(cargo, empleado.cargo) && salario == empleado.salario
+                && tiempoCompleto == empleado.tiempoCompleto
+                && Objects.equals(departamentoAlQuePertenece, empleado.departamentoAlQuePertenece);
     }
 
     @Override
@@ -154,14 +156,9 @@ public class Empleado {
 
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            ", cargo='" + getCargo() + "'" +
-            ", salario='" + getSalario() + "'" +
-            ", tiempoCompleto='" + isTiempoCompleto() + "'" +
-            ", departamentoAlQuePertenece='" + getDepartamentoAlQuePertenece() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", nombre='" + getNombre() + "'" + ", cargo='" + getCargo() + "'"
+                + ", salario='" + getSalario() + "'" + ", tiempoCompleto='" + isTiempoCompleto() + "'"
+                + ", departamentoAlQuePertenece='" + getDepartamentoAlQuePertenece() + "'" + "}";
     }
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.empresa.Prueba.Tecnica.model.Empleado;
 import com.empresa.Prueba.Tecnica.repository.EmpleadoRepositorio;
+import com.empresa.Prueba.Tecnica.repository.SumSalarioPorDepartamento;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,5 +31,9 @@ public class EmpleadoService {
 
     public List<Empleado> getTopEmpleadosSalario(int numTop) {
         return empleadoRepositorio.findTopEmpleadosSalario(numTop);
+    }
+
+    public List<SumSalarioPorDepartamento> getSumSalariosGroupByDepartamento() {
+        return empleadoRepositorio.getSumSalariosGroupByDepartamento();
     }
 }

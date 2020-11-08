@@ -8,6 +8,7 @@ import com.empresa.Prueba.Tecnica.exceptions.InternalServerErrorException;
 import com.empresa.Prueba.Tecnica.exceptions.NotFoundException;
 import com.empresa.Prueba.Tecnica.model.Departamento;
 import com.empresa.Prueba.Tecnica.model.Empleado;
+import com.empresa.Prueba.Tecnica.repository.SumSalarioPorDepartamento;
 import com.empresa.Prueba.Tecnica.services.DepartamentoService;
 import com.empresa.Prueba.Tecnica.services.EmpleadoService;
 
@@ -53,6 +54,16 @@ public class EmpleadoController {
             return resultado;
         } else {
             throw new NotFoundException("No se encontraron Empleados");
+        }
+    }
+
+    @GetMapping("/empleados/sum-salarios-por-departamentos")
+    public List<SumSalarioPorDepartamento> getSumSalariosGroupByDepartamento() {
+        List<SumSalarioPorDepartamento> resultado = empleadoService.getSumSalariosGroupByDepartamento();
+        if (!resultado.isEmpty()) {
+            return resultado;
+        } else {
+            throw new InternalServerErrorException("Error suma de salarios por departamentos");
         }
     }
 
