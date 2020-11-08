@@ -1,6 +1,5 @@
 package com.empresa.Prueba.Tecnica.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.empresa.Prueba.Tecnica.model.Departamento;
@@ -13,10 +12,6 @@ import org.springframework.stereotype.Service;
 public class DepartamentoService {
     @Autowired
     DepartamentoRepositorio departamentoRepositorio;
-
-    public List<Departamento> getAll() {
-        return departamentoRepositorio.findAll();
-    }
 
     public Optional<Departamento> findByNombre(String nombre) {
         return departamentoRepositorio.findByNombre(nombre);

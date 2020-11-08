@@ -1,4 +1,4 @@
-package com.empresa.Prueba.Tecnica.security;
+package com.empresa.Prueba.Tecnica.auxiliar;
 
 import com.empresa.Prueba.Tecnica.controller.EmpleadoController;
 

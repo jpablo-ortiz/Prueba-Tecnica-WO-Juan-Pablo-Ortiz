@@ -1,7 +1,6 @@
 package com.empresa.Prueba.Tecnica.controller;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import com.empresa.Prueba.Tecnica.auxiliar.MetodosCSV;
@@ -14,13 +13,11 @@ import com.empresa.Prueba.Tecnica.services.EmpleadoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,21 +31,6 @@ public class EmpleadoController {
     @Autowired
     private DepartamentoService departamentoService;
 
-    
-    @GetMapping("/empleados")
-    public List<Empleado> findAll(@RequestParam Map<String, Object> params) {
-        try {
-            List<Empleado> resultado = empleadoService.getAll();
-            if (!resultado.isEmpty()) {
-                return resultado;
-            } else {
-                throw new NotFoundException("No se encontraron Empleados");
-            }
-        } catch (Exception e) {
-            throw new NotFoundException("No se encontraron Empleados");
-        }
-    }
-
     /*
      * Ejemplo uso con parametros de pageable:
      * /departamento/{idDepartamento}/empleados?page=0&size=3&sort=id,desc
@@ -61,6 +43,16 @@ public class EmpleadoController {
             return resultado;
         } else {
             throw new NotFoundException("No se encontraron Empleados en este departamento");
+        }
+    }
+
+    @GetMapping("/empleados/salarios-top5")
+    public List<Empleado> findTop5EmpleadosSalario() {
+        List<Empleado> resultado = empleadoService.getTopEmpleadosSalario(5);
+        if (!resultado.isEmpty()) {
+            return resultado;
+        } else {
+            throw new NotFoundException("No se encontraron Empleados");
         }
     }
 

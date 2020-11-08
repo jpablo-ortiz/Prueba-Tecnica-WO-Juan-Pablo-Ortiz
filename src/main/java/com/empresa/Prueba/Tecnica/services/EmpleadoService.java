@@ -27,4 +27,8 @@ public class EmpleadoService {
     public Empleado save(Empleado nuevoEmpleado) {
         return empleadoRepositorio.save(nuevoEmpleado);
     }
+
+    public List<Empleado> getTopEmpleadosSalario(int numTop) {
+        return empleadoRepositorio.findTopEmpleadosSalario(numTop);
+    }
 }
