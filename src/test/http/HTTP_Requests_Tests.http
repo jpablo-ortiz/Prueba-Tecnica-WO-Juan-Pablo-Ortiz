@@ -1,0 +1,20 @@
+#####################
+### SERVICIOS WEB ###
+#####################
+
+### 1) Servicio Web #1: Realiza el cargue del archivo a la base de datos.
+    GET http://localhost:8080/api/leerCSV
+
+### 2) Servicio Web #2: Permite obtener los 5 primeros empleados con el salario más alto.
+    GET http://localhost:8080/api/empleados/salarios-top5
+
+### 3) Servicio Web #3: Permite obtener la sumatoria de salarios agrupados por departamento.
+    GET http://localhost:8080/api/empleados/sum-salarios-por-departamentos
+
+### 4) Servicio Web #4: Permite consultar de manera paginada los empleados de un departamento
+#                    dada la clave primaria (id) del departamento.
+    GET http://localhost:8080/api/departamentos/2/empleados
+###
+    GET http://localhost:8080/api/departamento/2/empleados?page=0&size=6
+###
+    GET http://localhost:8080/api/departamento/2/empleados?page=0&size=10&sort=id,desc

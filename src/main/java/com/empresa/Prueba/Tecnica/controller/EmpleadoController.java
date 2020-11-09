@@ -16,61 +16,128 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Esta clase contiene el controlador de los empleados con sus requests.
+ *
+ * @author Juan Pablo Ortiz
+ * @version 1.0
+ */
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
 public class EmpleadoController {
 
+    /**
+     * Inyección del servicio de los empleados
+     */
     @Autowired
     private EmpleadoService empleadoService;
 
+    /**
+     * Inyección del servicio de los departamentos
+     */
     @Autowired
     private DepartamentoService departamentoService;
 
-    /*
-     * Ejemplo uso con parametros de pageable:
-     * /departamento/{idDepartamento}/empleados?page=0&size=3&sort=id,desc
+    /**
+     * Servicio web que permite consultar de manera paginada los empleados de un
+     * departamento.
+     * <p>
+     * Para usar parámetros que no sean por defecto en la paginación agregar "?"
+     * seguido por uno o varios de los parámetros de paginación (en caso se poner
+     * dos o más agregar "&" entre ellos), los principales parámetros son:
+     * <ul>
+     * <li>"page = número de la página".</li>
+     * <li>"size = cantidad de datos por página".</li>
+     * </ul>
+     * Ejemplo: http://localhost:8080/api/departamento/2/empleados?page=0&size=5
+     * </p>
+     * 
+     * @param departamentoId id (clave primaria) del departamento.
+     * @param pageable Paginable para habilitar la paginación de los empleados del departamento indicado.
+     * @return JSON con los datos paginados de los empleados obtenidos.
+     * @throws NotFoundException Se levanta este error en el caso que no se
+     *                           encuentre ningún empleado, en el departamento
+     *                           indicado, en la base de datos.
      */
-    @GetMapping("/departamento/{idDepartamento}/empleados")
-    public Page<Empleado> findAllByDepartamentoId(@PathVariable(value = "idDepartamento") Long departamentoId,
-            Pageable pageable) {
+    @RequestMapping(value = "/departamento/{idDepartamento}/empleados", method = RequestMethod.GET, produces = "application/json")
+    public Page<Empleado> findAllByDepartamentoId(@PathVariable(value = "idDepartamento") Long departamentoId, Pageable pageable) {
         Page<Empleado> resultado = empleadoService.getAllByDepartamentoId(departamentoId, pageable);
-        if (!resultado.isEmpty()) {
-            return resultado;
-        } else {
+        try {
+            if (!resultado.isEmpty()) {
+                return resultado;
+            } else {
+                throw new NotFoundException("No se encontraron Empleados en este departamento");
+            }
+        } catch (Exception e) {
             throw new NotFoundException("No se encontraron Empleados en este departamento");
         }
     }
 
-    @GetMapping("/empleados/salarios-top5")
+    /**
+     * Servicio web que permite obtener los 5 empleados con el salario más alto.
+     * 
+     * @return JSON con los datos de los 5 empleados con el salario más alto.
+     * @throws NotFoundException Se levanta este error en el caso que no se
+     *                           encuentre ningún empleado en la base de datos.
+     */
+    @RequestMapping(value = "/empleados/salarios-top5", method = RequestMethod.GET, produces = "application/json")
     public List<Empleado> findTop5EmpleadosSalario() {
         List<Empleado> resultado = empleadoService.getTopEmpleadosSalario(5);
-        if (!resultado.isEmpty()) {
-            return resultado;
-        } else {
+        try {
+            if (!resultado.isEmpty()) {
+                return resultado;
+            } else {
+                throw new NotFoundException("No se encontraron Empleados");
+            }
+        } catch (Exception e) {
             throw new NotFoundException("No se encontraron Empleados");
         }
     }
 
-    @GetMapping("/empleados/sum-salarios-por-departamentos")
+    /**
+     * Servicio web que permite obtener la sumatoria de los salarios agrupados por
+     * departamentos.
+     * 
+     * @return JSON con los datos de la sumatoria de los salarios agrupados por
+     *         departamentos.
+     * @throws NotFoundException Se levanta este error en el caso que no se
+     *                           encuentre ningún resultado en la suma de salarios
+     *                           por departamento.
+     */
+    @RequestMapping(value = "/empleados/sum-salarios-por-departamentos", method = RequestMethod.GET, produces = "application/json")
     public List<SumSalarioPorDepartamento> getSumSalariosGroupByDepartamento() {
         List<SumSalarioPorDepartamento> resultado = empleadoService.getSumSalariosGroupByDepartamento();
-        if (!resultado.isEmpty()) {
-            return resultado;
-        } else {
-            throw new InternalServerErrorException("Error suma de salarios por departamentos");
+        try {
+            if (!resultado.isEmpty()) {
+                return resultado;
+            } else {
+                throw new InternalServerErrorException("No se encontraron resultados en la suma de salarios por departamento");
+            }
+        } catch (Exception e) {
+            throw new InternalServerErrorException("No se encontraron resultados en la suma de salarios por departamento");
         }
     }
 
+    /**
+     * Servicio web que realiza la carga del archivo empleados.csv a la base de
+     * datos.
+     * 
+     * @return Mensaje indicando que se cargaron los datos de los empleados a la
+     *         base de datos.
+     * @throws InternalServerErrorException Se levanta este error en el caso que no
+     *                                      se ingresen correctamente los datos de
+     *                                      los empleados en la base de datos.
+     */
     @RequestMapping(value = "/leerCSV", produces = "application/json")
     public String inicializadorDatosEmpleadosCSV() {
         try {
-            List<String[]> datos = MetodosCSV.leerCSV();
+            List<String[]> datos = MetodosCSV.leerEmpleadosCSV();
 
             String[] lineaActual;
             String nombre;
