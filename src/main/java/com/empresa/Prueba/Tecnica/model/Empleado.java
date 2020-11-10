@@ -57,22 +57,14 @@ public class Empleado {
     private Departamento departamentoAlQuePertenece;
 
     /**
-     * Método constructor vacio.
-     */
-    public Empleado() {
-    }
-
-    /**
      * Método constructor parametrizado.
-     * @param id Id del empleado.
      * @param nombre Nombre del empleado.
      * @param cargo Cargo del empleado.
      * @param salario Salario del empleado.
      * @param tiempoCompleto Si el empleado es o no de tiempo completo.
      * @param departamentoAlQuePertenece Departamento al que pertenece el empleado.
      */
-    public Empleado(Long id, String nombre, String cargo, double salario, boolean tiempoCompleto, Departamento departamentoAlQuePertenece) {
-        this.id = id;
+    public Empleado(String nombre, String cargo, double salario, boolean tiempoCompleto, Departamento departamentoAlQuePertenece) {
         this.nombre = nombre;
         this.cargo = cargo;
         this.salario = salario;
@@ -94,6 +86,12 @@ public class Empleado {
         this.cargo = cargo;
         this.salario = salario;
         this.tiempoCompleto = tiempoCompleto;
+    }
+
+    /**
+     * Método constructor vacio.
+     */
+    public Empleado() {
     }
 
     /** 

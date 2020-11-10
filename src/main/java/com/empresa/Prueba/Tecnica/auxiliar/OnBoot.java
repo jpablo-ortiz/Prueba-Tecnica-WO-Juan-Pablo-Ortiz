@@ -25,17 +25,17 @@ public class OnBoot implements ApplicationRunner {
     @Autowired
     private EmpleadoController empleadoController;
     
-    
+  
     /** 
-     * Permite ejecutar el request inicializadorDatosEmpleadosCSV al iniciar Spring Boot.
+     * Permite ejecutar el request "carga Datos Empleados CSV" al iniciar Spring Boot.
      * @param args
      * @throws Exception Se levanta este error si hay algún problema entre el código ejecutado.
      */
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) throws Exception {        
         // Descomentar la linea de código siguiente en el caso de querer
-        // habilitar la inicialización de los daatos CSV al iniciar Spring Boot.
-
-        // empleadoController.inicializadorDatosEmpleadosCSV();
+        // habilitar la inicialización de los datos CSV al iniciar Spring Boot.
+        
+        //empleadoController.cargaDatosEmpleadosCSV();
     }
 }

@@ -63,11 +63,9 @@ public class Departamento {
 
     /**
      * Método constructor parametrizado.
-     * @param id Id del departamento.
      * @param nombre Nombre del departamento.
      */
-    public Departamento(Long id, String nombre) {
-        this.id = id;
+    public Departamento(String nombre) {
         this.nombre = nombre;
         this.empleados = new ArrayList<Empleado>();
     }

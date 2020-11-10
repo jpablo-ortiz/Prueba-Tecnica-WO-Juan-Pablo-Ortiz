@@ -3,6 +3,7 @@ package com.empresa.Prueba.Tecnica.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.empresa.Prueba.Tecnica.auxiliar.LoggerLog4j;
 import com.empresa.Prueba.Tecnica.auxiliar.MetodosCSV;
 import com.empresa.Prueba.Tecnica.exceptions.InternalServerErrorException;
 import com.empresa.Prueba.Tecnica.exceptions.NotFoundException;
@@ -66,15 +67,19 @@ public class EmpleadoController {
      *                           indicado, en la base de datos.
      */
     @RequestMapping(value = "/departamento/{idDepartamento}/empleados", method = RequestMethod.GET, produces = "application/json")
-    public Page<Empleado> findAllByDepartamentoId(@PathVariable(value = "idDepartamento") Long departamentoId, Pageable pageable) {
+    public Page<Empleado> findAllEmpleadosByDepartamentoId(@PathVariable(value = "idDepartamento") Long departamentoId, Pageable pageable) {
         Page<Empleado> resultado = empleadoService.getAllByDepartamentoId(departamentoId, pageable);
         try {
             if (!resultado.isEmpty()) {
+                LoggerLog4j.info("| GET | Empleados por departamento (id:" + departamentoId + ") | Realizado correctamente | Datos paginados |"); 
+                LoggerLog4j.info("| Elementos encontrados: " + resultado.getTotalElements() + " | Total páginas: " + resultado.getTotalPages() + " | Elementos por página: " + resultado.getSize() + " |");
                 return resultado;
             } else {
                 throw new NotFoundException("No se encontraron Empleados en este departamento");
             }
         } catch (Exception e) {
+            LoggerLog4j.error("| GET | Empleados por departamento (id:" + departamentoId + ") | Error solicitud |");
+            LoggerLog4j.error("| No se encontraron empleados en este departamento |");
             throw new NotFoundException("No se encontraron Empleados en este departamento");
         }
     }
@@ -91,11 +96,15 @@ public class EmpleadoController {
         List<Empleado> resultado = empleadoService.getTopEmpleadosSalario(5);
         try {
             if (!resultado.isEmpty()) {
+                LoggerLog4j.info("| GET | Top 5 empleados con el salario más alto | Realizado correctamente |"); 
+                LoggerLog4j.info("| Elementos encontrados: " + resultado.size() + " |");
                 return resultado;
             } else {
                 throw new NotFoundException("No se encontraron Empleados");
             }
         } catch (Exception e) {
+            LoggerLog4j.error("| GET | Top 5 empleados con el salario más alto | Error solicitud |");
+            LoggerLog4j.error("| No se encontraron Empleados |");
             throw new NotFoundException("No se encontraron Empleados");
         }
     }
@@ -115,11 +124,15 @@ public class EmpleadoController {
         List<SumSalarioPorDepartamento> resultado = empleadoService.getSumSalariosGroupByDepartamento();
         try {
             if (!resultado.isEmpty()) {
+                LoggerLog4j.info("| GET | Sumatoria de salarios agrupados por departamentos | Realizado correctamente |"); 
+                LoggerLog4j.info("| Elementos encontrados: " + resultado.size() + " |");
                 return resultado;
             } else {
                 throw new InternalServerErrorException("No se encontraron resultados en la suma de salarios por departamento");
             }
         } catch (Exception e) {
+            LoggerLog4j.error("| GET | Sumatoria de salarios agrupados por departamentos | Error solicitud |");
+            LoggerLog4j.error("| No se encontraron resultados en la suma de salarios por departamento |");
             throw new InternalServerErrorException("No se encontraron resultados en la suma de salarios por departamento");
         }
     }
@@ -135,7 +148,7 @@ public class EmpleadoController {
      *                                      los empleados en la base de datos.
      */
     @RequestMapping(value = "/leerCSV", produces = "application/json")
-    public String inicializadorDatosEmpleadosCSV() {
+    public String cargaDatosEmpleadosCSV() {
         try {
             List<String[]> datos = MetodosCSV.leerEmpleadosCSV();
 
@@ -150,6 +163,9 @@ public class EmpleadoController {
             Optional<Departamento> consultaDepartamento;
             Departamento nuevoDepartamento;
             Empleado nuevoEmpleado;
+
+            int contadorEmpleados = 0;
+            int contadorDepartamentos = 0;
 
             for (int i = 1; i < datos.size(); i++) {
                 lineaActual = datos.get(i);
@@ -169,6 +185,7 @@ public class EmpleadoController {
                     nuevoDepartamento = new Departamento();
                     nuevoDepartamento.setNombre(nombreDepartamento);
                     departamentoService.save(nuevoDepartamento);
+                    contadorDepartamentos++;
 
                     nuevoEmpleado.setDepartamentoAlQuePertenece(nuevoDepartamento);
                 }
@@ -179,9 +196,14 @@ public class EmpleadoController {
                 nuevoEmpleado.setTiempoCompleto(tiempoCompleto);
 
                 empleadoService.save(nuevoEmpleado);
+                contadorEmpleados++;
             }
-            return "{\"value\": \"Datos inicializados correctamente\"}";
+            LoggerLog4j.info("| GET | Carga del archivo empleados.csv a la base de datos | Realizado correctamente |"); 
+            LoggerLog4j.info("| Empleados agregados: " + contadorEmpleados + " | Departamentos agregados: " + contadorDepartamentos + " |");
+            return "{\"value\": \"Datos cargados correctamente\"}";
         } catch (Exception e) {
+            LoggerLog4j.error("| GET | Carga del archivo empleados.csv a la base de datos | Error solicitud |"); 
+            LoggerLog4j.error("| Error en la lectura de los archivos CSV |");
             throw new InternalServerErrorException("Error en la lectura de los archivos CSV");
         }
     }

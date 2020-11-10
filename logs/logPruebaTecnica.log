@@ -1,0 +1,13 @@
+HHH000204: Processing PersistenceUnitInfo [name: default]
+HHH000412: Hibernate ORM core version 5.4.22.Final
+HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+| GET | Carga del archivo empleados.csv a la base de datos | Realizado correctamente |
+| Empleados agregados: 7454 | Departamentos agregados: 328 |
+| GET | Top 5 empleados con el salario más alto | Realizado correctamente |
+| Elementos encontrados: 5 |
+| GET | Sumatoria de salarios agrupados por departamentos | Realizado correctamente |
+| Elementos encontrados: 328 |
+| GET | Empleados por departamento (id:2) | Realizado correctamente | Datos paginados |
+| Elementos encontrados: 28 | Total páginas: 2 | Elementos por página: 20 |

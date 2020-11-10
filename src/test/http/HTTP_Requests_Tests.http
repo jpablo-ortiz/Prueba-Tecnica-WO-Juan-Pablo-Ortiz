@@ -13,7 +13,7 @@
 
 ### 4) Servicio Web #4: Permite consultar de manera paginada los empleados de un departamento
 #                    dada la clave primaria (id) del departamento.
-    GET http://localhost:8080/api/departamentos/2/empleados
+    GET http://localhost:8080/api/departamento/2/empleados
 ###
     GET http://localhost:8080/api/departamento/2/empleados?page=0&size=6
 ###
